@@ -1,41 +1,45 @@
 import * as vscode from "vscode";
-import { TldrRepository } from "./TldrRepository";
+import { TldrRepository, TldrFetcher } from "./TldrRepository";
 import { CachingFetcher, GithubFetcher } from "./fetchers";
 
 export function activate(context: vscode.ExtensionContext) {
-	let fetcher = new CachingFetcher(new GithubFetcher());
-	let repository = new TldrRepository(fetcher);
+  let fetcher = new CachingFetcher(context.globalState, new GithubFetcher());
+  let repository = new TldrRepository(fetcher);
 
-  context.globalState.update("tldr.pages.apt", repository.getMarkdown("apt"));
-
-	let provider: vscode.HoverProvider = newTldrHoverProvider(context);
+  let provider: vscode.HoverProvider = newTldrHoverProvider(repository);
   let supportedEditors = [
     "dockerfile",
     "makefile",
     "powershell",
     "shellscript",
     "bat"
-	];
-	
-	registerHoverWithSupportedLanguages(supportedEditors, provider);
+  ];
+
+  registerHoverWithSupportedLanguages(supportedEditors, provider);
 }
 
-function newTldrHoverProvider(context: vscode.ExtensionContext): vscode.HoverProvider {
-	return {
-		provideHover(document, position, token) {
-			console.log("gmm");
-			const contents = new vscode.MarkdownString(context.globalState.get("tldr.pages.apt"));
-			return {
-				contents: [contents]
-			};
-		}
-	};
+function newTldrHoverProvider(
+  repository: TldrRepository
+): vscode.HoverProvider {
+  return {
+    provideHover(document, position, token) {
+      let currentTokenRange = document.getWordRangeAtPosition(position);
+      if (currentTokenRange !== undefined && currentTokenRange.isSingleLine) {
+        let currentToken = document.getText(currentTokenRange);
+        const pageMarkdown = repository.getMarkdown(currentToken);
+        return pageMarkdown.then(markdown => new vscode.Hover(markdown));
+      }
+    }
+  };
 }
 
-function registerHoverWithSupportedLanguages(supportedEditors: string[], provider: vscode.HoverProvider) {
-	supportedEditors.forEach(lang => {
-		vscode.languages.registerHoverProvider(lang, provider);	
-	});
+function registerHoverWithSupportedLanguages(
+  supportedEditors: string[],
+  provider: vscode.HoverProvider
+) {
+  supportedEditors.forEach(lang => {
+    vscode.languages.registerHoverProvider(lang, provider);
+  });
 }
 
 export function deactivate() {}

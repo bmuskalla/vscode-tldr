@@ -1,25 +1,30 @@
 import { TldrFetcher } from "./TldrRepository";
+import { Memento } from "vscode";
+const fetch = require("isomorphic-fetch");
 
 export class CachingFetcher implements TldrFetcher {
   delegate: TldrFetcher;
+  memento: Memento;
 
-  constructor(delegate: TldrFetcher) {
+  constructor(memento: Memento, delegate: TldrFetcher) {
     this.delegate = delegate;
+    this.memento = memento;
   }
 
-  fetch(command: string): string {
+  fetch(command: string): Thenable<string> {
     return this.delegate.fetch(command);
   }
 }
 
 export class GithubFetcher implements TldrFetcher {
-  fetch(command: string): string {
-    console.log("showing " + command);
-    var markdown = `# apt
-
-        > Package management utility for Debian based distributions.
-                    
-        - Update the list of available packages and versions (it's recommended to run this before other \`apt\` commands):`;
-    return markdown;
+  readonly baseUrl =
+    "https://raw.githubusercontent.com/tldr-pages/tldr/master/pages/";
+  fetch(command: string): Thenable<string> {
+    console.log("fetching " + command);
+    let url = this.baseUrl + "common/" + command + ".md";
+    let content = fetch(url)
+      .then((response: any) => response.text())
+      .then((text: any) => text);
+    return content;
   }
 }
