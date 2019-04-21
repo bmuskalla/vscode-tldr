@@ -1,13 +1,37 @@
-import { MarkdownString } from "vscode";
+import { MarkdownString, commands } from "vscode";
+import { platform } from "os";
 
 export interface TldrFetcher {
-  fetch(command: string): Thenable<string>;
+  fetch(command: TldrPage): Thenable<string>;
+}
+
+export class TldrPage {
+  platform: TldrPlatform;
+  command: string;
+
+  constructor(platform: TldrPlatform, command:string) {
+    this.platform = platform;
+    this.command = command;
+  }
+
+  toString(): string {
+    return this.platform + "/" + this.command;
+  }
+  
+}
+
+export enum TldrPlatform {
+  Common = "common",
+  Linux = "linux",
+  OSX = "osx",
+  SunOS = "sunos",
+  Windows = "windows"
 }
 
 const fetch = require("isomorphic-fetch");
+
 class TldrIndex {
-  
-  pages: string[] = [];
+  pages: TldrPage[] = [];
 
   readonly baseUrl =
     "https://api.github.com/repos/tldr-pages/tldr/contents/pages/";
@@ -17,24 +41,30 @@ class TldrIndex {
   }
 
   async initializeData() {
-    await this.fetchPageIndex("common");
+    Object.values(TldrPlatform).forEach(async (platform) => {
+      console.log("Fetching index for '" + platform + "'");
+      await this.fetchPageIndex(platform);
+    });
   }
 
-  fetchPageIndex(platform: string): Promise<void> {
-    return fetch(this.baseUrl + platform)
+  fetchPageIndex(platformToFetch: TldrPlatform): Promise<void> {
+    return fetch(this.baseUrl + platformToFetch)
       .then((response: any) => response.json())
       .then((data: any) => {
         let doc;
         for (doc of data) {
-          this.pages.push(doc.name.split(".")[0]);
+          let commandName = doc.name.split(".")[0];
+          let page = new TldrPage(platformToFetch, commandName);
+          this.pages.push(page);
         }
       });
   }
 
   isAvailable(command: string) {
-    return this.pages.includes(command);
+    return this.pages.filter((p: TldrPage) => p.command === command)[0];
   }
 }
+
 export class TldrRepository {
   fetcher: TldrFetcher;
   index: TldrIndex;
@@ -45,9 +75,10 @@ export class TldrRepository {
   }
 
   getMarkdown(command: string): Thenable<MarkdownString> {
-    if (this.index.isAvailable(command)) {
+    let page = this.index.isAvailable(command);
+    if (page !== null) {
       return this.fetcher
-        .fetch(command)
+        .fetch(page)
         .then(text => new MarkdownString(this.format(text)));
     } else {
       return Promise.reject("not available");
@@ -59,5 +90,4 @@ export class TldrRepository {
     let headline = contents.indexOf("\n");
     return contents.substring(headline);
   }
-
 }
