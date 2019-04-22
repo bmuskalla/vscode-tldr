@@ -27,33 +27,6 @@
     "onLanguage:bat"
   ],
   "main": "./out/extension.js",
-  "contributes": {
-    "configuration": {
-      "type": "object",
-      "title": "tl;dr",
-      "properties": {
-        "tldr.platform": {
-          "type": "string",
-          "items": {
-            "type": "object",
-            "title": "Platforms",
-            "properties": {
-              "name": {
-                "type": "Auto-Defect",
-                "description": "X"
-              },
-              "size": {
-                "type": "Windows",
-                "description": "X"
-              }
-            }
-          },
-          "default": false,
-          "description": "Complete functions with their parameter signature."
-        }
-      }
-    }
-  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
