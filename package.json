@@ -1,10 +1,27 @@
 {
   "name": "vscode-tldr",
-  "displayName": "vscode-tldr",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "tl;dr pages",
+  "description": "Hover for commands using simplified and community-driven man pages.",
+  "version": "0.1.0",
+  "publisher": "bmuskalla",
+  "author": {
+    "name": "Benjamin Muskalla",
+    "email": "b.muskalla@gmail.com"
+  },
+  "license": "SEE LICENSE IN LICENSE",
   "engines": {
     "vscode": "^1.33.0"
+  },
+  "icon": "images/books.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bmuskalla/vscode-tldr.git"
+  },
+  "bugs": "https://github.com/bmuskalla/vscode-tldr/issues",
+  "homepage": "https://github.com/bmuskalla/vscode-tldr/blob/master/README.md",
+  "galleryBanner": {
+    "color": "#313131",
+    "theme": "dark"
   },
   "categories": [
     "Snippets",
@@ -15,9 +32,7 @@
     "man",
     "shell",
     "cli",
-    "command",
-    "bash",
-    "howto"
+    "bash"
   ],
   "activationEvents": [
     "onLanguage:dockerfile",
@@ -31,8 +46,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+    "postinstall": "node ./node_modules/vscode/bin/install"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1"
@@ -41,7 +55,6 @@
     "typescript": "^3.3.1",
     "vscode": "^1.1.28",
     "tslint": "^5.12.1",
-    "@types/node": "^10.12.21",
-    "@types/mocha": "^2.2.42"
+    "@types/node": "^10.12.21"
   }
 }
