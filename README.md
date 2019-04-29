@@ -20,7 +20,14 @@ Provides [tldr](https://github.com/tldr-pages/tldr/) hover information for commo
 
 ## How to use it?
 
-Hover over a command using your mouse or use the 'Show Hover' command in VS Code (by default, <kbd>⌘ Command</kbd> + <kbd>K</kbd> <kbd>⌘ Command</kbd> + <kbd>I</kbd>)
+Hover over a command using your mouse or use the 'Show Hover' command in VS Code (by default, <kbd>⌘ Command</kbd> + <kbd>K</kbd> <kbd>⌘ Command</kbd> + <kbd>I</kbd>).
+Tl;dr hovers are available in the following language modes:
+
+- Dockerfile
+- Shell script
+- Powershell
+- Makefile
+- Batch
 
 ## What does "tldr" mean?
 
