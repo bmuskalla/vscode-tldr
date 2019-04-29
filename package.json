@@ -2,7 +2,7 @@
   "name": "vscode-tldr",
   "displayName": "tl;dr pages",
   "description": "Hover for commands using simplified and community-driven man pages.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "publisher": "bmuskalla",
   "author": {
     "name": "Benjamin Muskalla",
