@@ -9,7 +9,7 @@ export class TldrPage {
   platform: TldrPlatform;
   command: string;
 
-  constructor(platform: TldrPlatform, command:string) {
+  constructor(platform: TldrPlatform, command: string) {
     this.platform = platform;
     this.command = command;
   }
@@ -17,7 +17,6 @@ export class TldrPage {
   toString(): string {
     return this.platform + "/" + this.command;
   }
-  
 }
 
 export enum TldrPlatform {
@@ -41,8 +40,7 @@ class TldrIndex {
   }
 
   async initializeData() {
-    Object.values(TldrPlatform).forEach(async (platform) => {
-      console.log("Fetching index for '" + platform + "'");
+    Object.values(TldrPlatform).forEach(async platform => {
       await this.fetchPageIndex(platform);
     });
   }
@@ -76,13 +74,12 @@ export class TldrRepository {
 
   getMarkdown(command: string): Thenable<MarkdownString> {
     let page = this.index.isAvailable(command);
-    if (page !== null) {
+    if (page) {
       return this.fetcher
         .fetch(page)
         .then(text => new MarkdownString(this.format(text)));
-    } else {
-      return Promise.reject("not available");
     }
+    return Promise.reject(new MarkdownString("not available"));
   }
 
   format(contents: string): string {

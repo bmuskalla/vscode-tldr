@@ -27,7 +27,10 @@ function newTldrHoverProvider(
       if (currentTokenRange !== undefined && currentTokenRange.isSingleLine) {
         let currentToken = document.getText(currentTokenRange);
         const pageMarkdown = repository.getMarkdown(currentToken);
-        return pageMarkdown.then(markdown => new vscode.Hover(markdown));
+        return pageMarkdown.then(
+          markdown => new vscode.Hover(markdown),
+          rejected => null
+        );
       }
     }
   };
