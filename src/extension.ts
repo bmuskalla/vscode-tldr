@@ -7,7 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
   let repository = new TldrRepository(fetcher);
 
   let provider: vscode.HoverProvider = newTldrHoverProvider(repository);
-  let supportedEditors = [
+  let supportedLanguageModes = [
     "dockerfile",
     "makefile",
     "powershell",
@@ -15,7 +15,11 @@ export function activate(context: vscode.ExtensionContext) {
     "bat"
   ];
 
-  registerHoverWithSupportedLanguages(supportedEditors, provider);
+  registerHoverWithSupportedLanguages(
+    context,
+    supportedLanguageModes,
+    provider
+  );
 }
 
 function newTldrHoverProvider(
@@ -37,11 +41,20 @@ function newTldrHoverProvider(
 }
 
 function registerHoverWithSupportedLanguages(
+  context: vscode.ExtensionContext,
   supportedEditors: string[],
   provider: vscode.HoverProvider
 ) {
   supportedEditors.forEach(lang => {
-    vscode.languages.registerHoverProvider(lang, provider);
+    const selectors = [
+      { scheme: "untitled", language: lang },
+      { scheme: "file", language: lang }
+    ];
+    let disposable = vscode.languages.registerHoverProvider(
+      selectors,
+      provider
+    );
+    context.subscriptions.push(disposable);
   });
 }
 
