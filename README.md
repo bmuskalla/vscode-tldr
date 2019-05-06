@@ -1,6 +1,7 @@
 # vscode-tldr
 
 [![license](https://img.shields.io/github/license/bmuskalla/vscode-tldr.svg)](https://github.com/bmuskalla/vscode-tldr/blob/master/LICENSE)
+[![Visual Studio Marketplace](https://vsmarketplacebadge.apphb.com/version-short/bmuskalla.vscode-tldr.svg)](https://marketplace.visualstudio.com/items?itemName=bmuskalla.vscode-tldr)
 
 Provides [tldr](https://github.com/tldr-pages/tldr/) hover information for common commands in bash/dockerfiles/powershell files. tldr pages are a collection of simplified and community-driven man pages.
 
