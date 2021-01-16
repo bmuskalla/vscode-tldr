@@ -3,7 +3,7 @@
 [![license](https://img.shields.io/github/license/bmuskalla/vscode-tldr.svg)](https://github.com/bmuskalla/vscode-tldr/blob/master/LICENSE)
 [![Visual Studio Marketplace](https://vsmarketplacebadge.apphb.com/version-short/bmuskalla.vscode-tldr.svg)](https://marketplace.visualstudio.com/items?itemName=bmuskalla.vscode-tldr)
 
-Provides [tldr](https://github.com/tldr-pages/tldr/) hover information for common commands in bash/dockerfiles/powershell files. tldr pages are a collection of simplified and community-driven man pages.
+Provides [tldr](https://github.com/tldr-pages/tldr/) hover information for common commands in bash/dockerfiles/powershell files. tldr-pages is a collection of simplified and community-driven man pages.
 
 ## Demo
 
@@ -22,7 +22,7 @@ Provides [tldr](https://github.com/tldr-pages/tldr/) hover information for commo
 ## How to use it?
 
 Hover over a command using your mouse or use the 'Show Hover' command in VS Code (by default, <kbd>⌘ Command</kbd> + <kbd>K</kbd> <kbd>⌘ Command</kbd> + <kbd>I</kbd>).
-Tl;dr hovers are available in the following language modes:
+tldr hovers are available in the following language modes:
 
 - Dockerfile
 - Shell script
